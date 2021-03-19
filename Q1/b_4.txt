@@ -1,0 +1,5 @@
+width  5
+height 3
+row  b1 b2  b7  b4  b3
+row  w  b2  b7   b5  w
+row  w  b2  w   w   b6
