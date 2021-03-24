@@ -1,0 +1,179 @@
+import java.util.Arrays;
+import java.util.Date;
+
+public class Array {
+    public static String name = "Array";
+    private final String creationTime;
+    private String modificationTime;
+    private boolean unlimited = false;
+    private int soMany = 0;
+    private int soManyNull = 0;
+    private int arraySize = 100;
+    private Object[] storeElements;
+    private boolean[] markPosition;
+    private static final Date myTime = new Date();
+    private int index = 0;
+    private boolean nullObjectAdded;
+
+    public Array() {
+        this.modificationTime = creationTime = myTime.toString();
+        this.storeElements = new Object[this.arraySize];
+        this.markPosition = new boolean[this.arraySize];
+    }
+
+    public Array(int arraySize) {
+        this.arraySize = arraySize;
+        this.modificationTime = this.creationTime = myTime.toString();
+        this.storeElements = new Object[this.arraySize];
+        this.markPosition = new boolean[this.arraySize];
+    }
+
+    protected void updateModificationTime() {
+        this.modificationTime = myTime.toString();
+    }
+
+    protected void findPositionToAdd(Object element) {
+        for (int i = 0; i < this.arraySize; i++) {
+            if ( !this.markPosition[i] ) {
+                if (element == null) {
+                    this.nullObjectAdded = true;
+                    this.soManyNull++;
+                }
+
+                this.storeElements[i] = element;
+                this.markPosition[i] = true;
+                break;
+            }
+        }
+
+        this.soMany++;
+    }
+
+    //  Returns true if element could be added
+    public boolean add(Object element) {
+        // string integer other than
+        if (this.soMany >= this.arraySize) {
+            System.out.println("Cannot add more elements!");
+            return false;
+        }
+
+        findPositionToAdd(element);
+        updateModificationTime();
+        return true;
+    }
+
+    // Returns true if element could be deleted
+    public boolean delete(Object element) {
+        if (this.soMany <= 0) {
+            System.out.println("No more elements to delete!");
+            return false;
+        }
+
+        for (int i = 0; i < this.arraySize; i++) {
+            if ( this.markPosition[i] && element == this.storeElements[i]) {
+                if (element == null && --this.soManyNull <= 0) {
+                    this.nullObjectAdded = false;
+                }
+
+                this.storeElements[i] = null;
+                this.markPosition[i] = false;
+                break;
+            }
+        }
+
+        this.soMany--;
+        updateModificationTime();
+        return true;
+    }
+
+    // Returns the maximum number of elements can be stored
+    public int getMax() {
+        System.out.println("Array's getMax");
+        return this.arraySize;
+    }
+
+    // Returns the current number of elements stored
+    public int size() {
+        return this.soMany;
+    }
+
+    // Returns true if a particular element is stored
+//    public boolean contains(Element element) {
+//        return true;
+//    }
+
+    // Returns true if no more elements can be stored unless an element is deleted
+    public boolean isFull() {
+        return this.soMany >= this.arraySize;
+    }
+
+    // Returns true if 0 ore elements are stored
+    public boolean isEmpty() {
+        return this.soMany == 0;
+    }
+
+    // Returns a textual representation
+    public String toString() {
+        String str = "name: " + this.name + "\ncreationTime: " + this.creationTime
+                + "\nunlimited: " + this.unlimited + "\nsoMany: " + this.soMany
+                + "\nnullObjectAdded: " + this.nullObjectAdded + "\nmodificationTime: " + this.modificationTime + "\n";
+
+        for (int i = 0; i < storeElements.length; i++) {
+            if (storeElements[i] == null && markPosition[i]) {
+                str += " , ";
+            }
+            else if (storeElements[i] != null) {
+                str += storeElements[i] + ", ";
+            }
+        }
+
+        return str + "\n";
+    }
+
+    public static void main(String[] args) {
+        Array myArray = new Array();
+
+        Integer num1 = Integer.valueOf(1);
+        Integer num2 = Integer.valueOf(2);
+        Integer num3 = Integer.valueOf(3);
+        Integer num4 = Integer.valueOf(4);
+        Integer num5 = num2;
+        myArray.add(num2);
+        myArray.add(num3);
+        myArray.add(num4);
+        myArray.add(null);
+        String str1 = new String("ABC");
+        String str2 = new String("DEF");
+        myArray.add(str1);
+        myArray.add(str2);
+        myArray.add(null);
+        myArray.add(num1);
+        myArray.add("GHI");
+        myArray.add("MNK");
+        System.out.println(myArray);
+        myArray.delete(num2);
+        myArray.delete(null);
+        myArray.delete(str2);
+        myArray.delete(null);
+        System.out.println(myArray);
+        System.out.println(myArray.getMax());
+
+//        System.out.println(num2 == num5);
+
+//        String str = null;
+
+/*        try {
+            assert str != null : "Both null!";
+            System.out.println(str);
+        } catch (AssertionError e) {
+            e.printStackTrace();
+        }*/
+
+        /*boolean[] arr = {false, false, false};
+        arr[1] = true;
+        arr = Arrays.copyOf(arr, 5);
+        for (boolean b : arr)
+            System.out.println(b);*/
+
+    }
+}
