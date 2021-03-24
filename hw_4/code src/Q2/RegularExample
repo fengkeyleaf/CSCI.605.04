@@ -1,0 +1,113 @@
+/*
+ * RegularExample.java
+ *
+ * Version:
+ *     $1.0$
+ *
+ * Revisions:
+ *     $Log$
+ */
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.lang.Integer;
+
+/**
+ *
+ * @author       Xiaoyu  Tongyang
+ * @author       Chenxuan li
+ */
+
+public class RegularExample {
+    static String delimiter;
+    static String filename;
+    static int maximum = 100;
+    static private String[] allTestWordsFromFile = new String[maximum];
+    static int numberOfWords;
+
+    private static void printArray() {
+//        System.out.println(numberOfWords);
+        for (int i = 0; i < numberOfWords; i++) {
+//            if (allTestWordsFromFile[i].equals("")) System.out.println("Empty");
+            System.out.println(allTestWordsFromFile[i]);
+        }
+    }
+
+    static final private String[] allPatternsDescriptions = {
+            "starts with ’a’ followed by one digit or more digits", // 1
+            "a word with the vowels ’aeiou’ in order and each vowel can appear only once", // 2
+            "starts with ’a’ followed by 3 digits in the range between 1 and 3 only", // 3
+            "starts with ’a’ followed by least 3 digits in the range between 1 and 3 only", // 4
+            "starts with ’a’ followed by between 1 and 2 digits in the range between 8 and 9 only", // 5
+            "includes only lower case characters, but not the character ’h’, ’p’, and ’b’" // 6
+    };
+
+    static final private String[] allPatterns = {
+            "a\\d+", // 1
+            "[^aeiou]*aeiou[^aeiou]*", // 2
+            "a[1-3]{3}", // 3
+            "a[1-3]{3,}", // 4
+            "a[8-9]{1,2}", // 5
+            "[a-z&&[^hpb]]*" // 6
+    };
+
+    static private String[] allTestingWords = {
+            "a", "a1", "a1234567890", "1a", "Aa1234343", "", "a$", "a*1234", "aa1" // 1
+//            "aeiou", "hhhhaeiou", "aeiouu", "aeeeiou", "aeiouuu", "aeiouaeiou", "aeioukjkj", "" // 2
+//            "a123", "a12", "1a123", "aa123", "a222", "ab213", "a1231", "a432", "a12a", "" // 3
+//            "a123", "a12", "1a123", "aa123", "*a222", "a213123445566", "a13121232", "a12d", "a1*123123", "" // 4
+//            "a9", "a89", "a0", "a95", "8a89", "a8k", "a", "a898", "a12", "a00", "" // 5
+//            "", "qwertyuiopasdfghjklzxcvbnm", "qwertyuioasdfgjklzxcvnm", "aEf", "a(kaaa", "aiegf8", "a", "A", "6" // 6
+
+    };
+
+    public static void readFromFile() throws FileNotFoundException {
+        File f = new File(filename);
+//        System.out.println(f.canRead());
+        Scanner sc = new Scanner(f).useDelimiter(delimiter);
+
+        int index = 0;
+        while (index < allTestWordsFromFile.length && sc.hasNext()) {
+            String word = sc.next();
+            if ( Pattern.matches("\\S+", word)) {
+                allTestWordsFromFile[index++] = word;
+            }
+
+//            System.out.print(sc.next().strip());
+        }
+
+        numberOfWords = index;
+//        printArray();
+        sc.close();
+    }
+
+    public static void processStatic() throws FileNotFoundException	{
+/*
+        for (int i = 1; i <= allTestingWords.length; i++) {
+            System.out.println(i + ": " + Pattern.matches(allPatterns[0], allTestingWords[i - 1]));
+        }
+*/
+
+        for (int i = 0; i < numberOfWords; i++) {
+            for (int j = 0; j < allPatterns.length; j++) {
+                if (Pattern.matches(allPatterns[j], allTestWordsFromFile[i])) {
+                    System.out.printf("Input: -%s=\n", allTestWordsFromFile[i]);
+                    System.out.printf("This regular expression \"%s\" matches the following input: -%s=\n", allPatterns[j], allTestWordsFromFile[i]);
+                    System.out.printf("verbal explanation: %s\n\n", allPatternsDescriptions[j]);
+                }
+            }
+//            System.out.printf("", i + ": " + Pattern.matches(allPatterns[0], allTestingWords[i - 1]));
+        }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        delimiter = args.length > 0 ? args[0] : ":";
+        filename = "src/" + (args.length > 1 ? args[1] : "test_1.txt");
+//        System.out.println(filename);
+        readFromFile();
+        processStatic();
+    }
+}
