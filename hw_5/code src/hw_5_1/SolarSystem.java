@@ -11,8 +11,7 @@
 /**
  * This program does what exactly what hw 6.1 requires
  *
- * @author       Xiaoyu  Tongyang
- * @author       Chenxuan li
+ * @author      Xiaoyu  Tongyang, or call me sora sor short
  */
 
 package hw_5_1;
