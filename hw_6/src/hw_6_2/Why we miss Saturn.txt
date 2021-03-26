@@ -1,0 +1,5 @@
+The reason why "Saturn" is missed is because that two references, one of which is stored in the vector during runtime,
+the other of which is the one created in the main function, are both pointing to the same memory address.
+So when we modify the "Saturn" from outsider reference in the main function,
+it will change the object that the reference of the vector is pointing.
+As a result, we will miss "Saturn" after setting the new names and other variables to the object, which the two references are stands for

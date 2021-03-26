@@ -1,0 +1,30 @@
+1. boolean addAll(Collection<? extends E> c)
+Answer: Pass in a collection which stores E and its subclasses;
+
+2. boolean containsAll(Collection<?> c)
+Answer:  Pass in a collection which stores whatever types or classes;
+
+3. static <T> void fill(List<? super T> list, T obj)
+Answer: Generics method; T stands for whatever a particular type;
+              List<? super T> means that pass in a list which stores T and super classes;
+              T obj means that the argument obj needs to be type T;
+
+4. static <T extends Comparable<? super T>> void sort(List<T> list)
+Answer: Generics method; T stands for Comparable and classes implementing it;
+              For Comparable<? super T>, ? represents whatever class T actually stands for and its superclasses as well;
+              List<T> means that a list stores type T;
+
+5. static <T> void sort(List<T> list, Comparator<? super T> c)
+Answer: Generics method; T stands for whatever a particular type;
+              List<T> means that a list stores type T; 
+              Comparator<? super T> means that it has to have types that is T or its corresponding superclasses
+
+6. static void swap(List<?> list, int i, int j)
+Answer: Pass in a list which stores whatever types or classes;
+
+7. static <K, V> Map<K,V> synchronizedMap(Map<K,V> m)
+Answer:Generics method that has two independent generics K, V;
+              Map<K,V> means that pass in a map whose key has to be type K and value has to be type V;
+
+8. static void reverse(List<?> list)
+Answer: List<?> means that a list stores whatever types or classes; 
